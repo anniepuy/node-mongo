@@ -1,5 +1,6 @@
 const assert = require('assert').strict;
 
+/* old callback method example
 exports.insertDocument = (db, document, collection, callback) => {
     const coll = db.collection(collection);
     coll.insertOne(document, (err, result)=> {
@@ -7,27 +8,25 @@ exports.insertDocument = (db, document, collection, callback) => {
         callback(result);
     })
 }
+*/
 
-exports.findDocuments = (db, collection, callback) => {
+//New promises week 2
+exports.insertDocument = (db, document, collection) => {
     const coll = db.collection(collection);
-    coll.find().toArray((err, docs) => {
-        assert.strictEqual(err, null);
-        callback(docs);
-    })
+    return coll.insertOne(document);
 }
 
-exports.removeDocument = (db, document, collection, callback) => {
+exports.findDocuments = (db, collection) => {
     const coll = db.collection(collection);
-    coll.deleteOne(document, (err, result)=> {
-        assert.strictEqual(err, null);
-        callback(result);
-    })
+    return coll.find({}).toArray();
 }
 
-exports.updateDocument = (db, document, update, collection, callback) => {
+exports.removeDocument = (db, document, collection) => {
     const coll = db.collection(collection);
-    coll.updateOne(document, { $set: update }, null, (err, result) => {
-        assert.strictEqual(err, null);
-        callback(result);
-    })
+    return coll.deleteOne(document);
+}
+
+exports.updateDocument = (db, document, update, collection) => {
+    const coll = db.collection(collection);
+    return coll.updateOne(document, { $set: update}, null);
 }
